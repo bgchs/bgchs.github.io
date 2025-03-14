@@ -8,7 +8,7 @@
     <meta property="og:description" content="Living the cheese life">
     <meta property="og:url" content="https://bigcheese.co.kr">
     
-    <title>CrossFit bigcheese</title>
+    <title>bigcheese</title>
 </head>
 <body>
     <script>
@@ -22,11 +22,7 @@
             var hostname = currentLocation.hostname;
             
             // 호스트명에 따라 리다이렉트 URL 설정
-            if (hostname === "crossfit.bigcheese.co.kr") {
-                targetUrl = "https://bigcheese.imweb.me/crossfit";
-                // 즉시 리다이렉트
-                window.location.href = targetUrl;
-            } else if (hostname === "bigcheese.co.kr") {
+            if (hostname === "bigcheese.co.kr") {
                 targetUrl = "https://bigcheese.imweb.me/bigcheese";
                 window.location.href = targetUrl;
             } else {

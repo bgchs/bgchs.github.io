@@ -28,7 +28,7 @@
     <filter id="drop-shadow-1" filterUnits="userSpaceOnUse">
       <feOffset dx="5.67" dy="5.67"/>
       <feGaussianBlur result="blur" stdDeviation="5.67"/>
-      <feFlood flood-color="#1c7b3a" flood-opacity=".75"/>
+      <feFlood flood-color="#abaaaa" flood-opacity=".75"/>
       <feComposite in2="blur" operator="in"/>
       <feComposite in="SourceGraphic"/>
     </filter>

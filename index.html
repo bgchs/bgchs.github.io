@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#187F3B">
     <meta property="og:image" content="https://bigcheese.co.kr/og_bc.png">
     <meta property="og:title" content="bigcheese">
     <meta property="og:description" content="Living the cheese life">
@@ -20,16 +21,26 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            background: #187F3B;
         }
         
         #target-frame {
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
+            margin: 0 auto;
             width: 100%;
+            max-width: 480px;
             height: 100%;
             border: none;
             z-index: 10;
+        }
+
+        @media (min-width: 768px) {
+            html, body {
+                background: linear-gradient(90deg, #f2f2f2 calc(50% - 240px), #fff 0 calc(50% + 240px), #f2f2f2 0);
+            }
         }
     </style>
 </head>

@@ -64,7 +64,7 @@
         </div>
         <div class="rc-field">
             <label class="rc-label" for="rc-phone">연락처</label>
-            <input class="rc-input" id="rc-phone" type="tel" maxlength="30" autocomplete="tel" required>
+            <input class="rc-input" id="rc-phone" type="tel" inputmode="numeric" maxlength="13" autocomplete="tel" required>
         </div>
         <div class="rc-field">
             <label class="rc-label" for="rc-content">내용</label>
@@ -115,7 +115,6 @@
         appId: '1:957073358675:web:afef19212cea7548ffeba6'
     };
 
-
     const MAX_SIZE = 50 * 1024 * 1024;
     const EXT_RE = /\.(pdf|jpe?g|png|docx?|hwpx?|pptx?|zip)$/i;
 
@@ -124,6 +123,15 @@
     const form = $('rc-form'), submitBtn = $('rc-submit'), errorEl = $('rc-error');
 
     $('rc-content').addEventListener('input', (e) => { $('rc-count').textContent = e.target.value.length; });
+
+    $('rc-phone').addEventListener('input', (e) => {
+        const d = e.target.value.replace(/\D/g, '').slice(0, 11);
+        e.target.value =
+            d.length <= 3 ? d :
+            d.length <= 7 ? `${d.slice(0, 3)}-${d.slice(3)}` :
+            d.length <= 10 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}` :
+            `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
+    });
 
     $('rc-file').addEventListener('change', (e) => {
         const f = e.target.files[0];

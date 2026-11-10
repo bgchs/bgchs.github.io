@@ -132,7 +132,7 @@
 
         /* 이 화면 배치 */
         .rc-top    { display: flex; align-items: center; justify-content: space-between; gap: var(--bc-space-16); }
-        .rc-top h1 { color: var(--bc-color-primary); }
+        .rc-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
         .rc-logo {
             display: block; line-height: 0; background: var(--bc-color-primary);
             -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg) left center / contain no-repeat;
@@ -156,7 +156,7 @@
 <main class="bc-page">
     <header class="rc-top">
         <a class="rc-logo" href="/"><img src="https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg" alt="bigcheese"></a>
-        <h1 class="bc-headline-s">RECRUIT</h1>
+        <h1 class="rc-sr-only">채용 지원</h1>
     </header>
 
     <img class="rc-poster" src="https://bgchs.github.io/hiring_poster.png" alt="WE'RE HIRING">

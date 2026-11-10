@@ -131,7 +131,14 @@
         .bc-snackbar.is-open { display: flex; }
 
         /* 이 화면 배치 */
-        .rc-title  { margin-bottom: var(--bc-space-24); }
+        .rc-top    { display: flex; align-items: center; justify-content: space-between; gap: var(--bc-space-16); }
+        .rc-logo {
+            display: block; line-height: 0; background: var(--bc-color-primary);
+            -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg) left center / contain no-repeat;
+                    mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg) left center / contain no-repeat;
+        }
+        .rc-logo img { display: block; height: 40px; width: auto; opacity: 0; }
+        .rc-poster { display: block; width: 100%; height: auto; margin: var(--bc-space-24) 0; border-radius: var(--bc-radius-card); }
         .rc-fields { display: flex; flex-direction: column; gap: var(--bc-space-8); }
         .rc-agree  { margin-top: var(--bc-space-16); }
         .rc-agree-title { font: var(--bc-type-title-m); }
@@ -146,7 +153,12 @@
 </head>
 <body>
 <main class="bc-page">
-    <h1 class="bc-headline-s rc-title">RECRUIT</h1>
+    <header class="rc-top">
+        <a class="rc-logo" href="/"><img src="https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg" alt="bigcheese"></a>
+        <h1 class="bc-headline-s">RECRUIT</h1>
+    </header>
+
+    <img class="rc-poster" src="https://bgchs.github.io/hiring_poster.png" alt="WE'RE HIRING">
 
     <form id="rc-form" novalidate>
         <div class="rc-fields">

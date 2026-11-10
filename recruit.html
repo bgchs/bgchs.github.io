@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#187F3B">
+    <meta name="robots" content="noindex">
+    <title>채용 지원 | bigcheese</title>
+    <link rel="icon" type="image/png" sizes="196x196" href="https://cdn.imweb.me/thumbnail/20250306/180662c3f2550.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { background: #F8F4E7; }
+        body {
+            font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+            word-break: keep-all;
+        }
+        main { max-width: 440px; margin: 0 auto; padding: 48px 16px 64px; }
+        h1 { font-size: 24px; line-height: 32px; color: #187F3B; margin-bottom: 24px; }
+        .rc-card { background: #fff; border-radius: 20px; padding: 16px; }
+        .rc-field { margin-bottom: 16px; }
+        .rc-label { display: block; font-size: 14px; font-weight: 500; color: #777; margin-bottom: 8px; }
+        .rc-input, .rc-textarea {
+            width: 100%; border: 0; border-radius: 16px; background: #F8F4E7;
+            font: inherit; font-size: 16px; color: #333; padding: 12px 16px; outline: none;
+        }
+        .rc-input { height: 48px; }
+        .rc-textarea { min-height: 160px; resize: vertical; }
+        .rc-count { text-align: right; font-size: 12px; color: #777; margin-top: 4px; }
+        .rc-file {
+            display: flex; align-items: center; gap: 12px;
+            height: 48px; border-radius: 16px; background: #F8F4E7; padding: 0 16px; cursor: pointer;
+        }
+        .rc-file input { display: none; }
+        .rc-file-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #777; }
+        .rc-file-name.is-set { color: #333; }
+        .rc-hint { font-size: 12px; color: #777; margin-top: 4px; }
+        .rc-agree { background: #F8F4E7; border-radius: 16px; padding: 12px 16px; font-size: 14px; color: #777; }
+        .rc-agree ul { padding-left: 18px; margin: 4px 0 8px; }
+        .rc-agree label { display: flex; align-items: center; gap: 8px; color: #333; font-weight: 500; cursor: pointer; }
+        .rc-agree input { width: 18px; height: 18px; accent-color: #187F3B; }
+        .rc-error { color: #E4007F; font-size: 14px; margin-top: 12px; min-height: 20px; }
+        .rc-submit {
+            width: 100%; height: 48px; border: 0; border-radius: 999px; margin-top: 8px;
+            background: #187F3B; color: #F8F4E7; font: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+        }
+        .rc-submit:disabled { background: #CCC; cursor: default; }
+        .rc-done { text-align: center; padding: 48px 16px; }
+        .rc-done p { font-size: 16px; color: #333; }
+        .rc-privacy { display: block; text-align: center; font-size: 12px; color: #777; margin-top: 16px; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>채용 지원</h1>
+
+    <form class="rc-card" id="rc-form" novalidate>
+        <div class="rc-field">
+            <label class="rc-label" for="rc-name">이름</label>
+            <input class="rc-input" id="rc-name" type="text" maxlength="50" autocomplete="name" required>
+        </div>
+        <div class="rc-field">
+            <label class="rc-label" for="rc-phone">연락처</label>
+            <input class="rc-input" id="rc-phone" type="tel" maxlength="30" autocomplete="tel" required>
+        </div>
+        <div class="rc-field">
+            <label class="rc-label" for="rc-content">내용</label>
+            <textarea class="rc-textarea" id="rc-content" maxlength="1000" required></textarea>
+            <div class="rc-count"><span id="rc-count">0</span> / 1000</div>
+        </div>
+        <div class="rc-field">
+            <span class="rc-label">파일</span>
+            <label class="rc-file">
+                <input id="rc-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.hwp,.hwpx,.ppt,.pptx,.zip">
+                <span class="rc-file-name" id="rc-file-name">파일 선택</span>
+            </label>
+            <div class="rc-hint">PDF, 이미지, 문서(DOC·HWP·PPT), ZIP · 50MB 이하</div>
+        </div>
+        <div class="rc-field rc-agree">
+            <p>개인정보 수집·이용 동의</p>
+            <ul>
+                <li>항목: 이름, 연락처, 지원 내용, 첨부 파일</li>
+                <li>목적: 채용 전형 진행</li>
+                <li>보유 기간: 채용 전형 완료 후 3개월</li>
+            </ul>
+            <p style="margin-bottom:8px;">동의하지 않을 수 있으며, 이 경우 지원이 제한됩니다.</p>
+            <label><input type="checkbox" id="rc-agree"> 동의합니다</label>
+        </div>
+
+        <button class="rc-submit" id="rc-submit" type="submit">지원하기</button>
+        <div class="rc-error" id="rc-error"></div>
+    </form>
+
+    <div class="rc-card rc-done" id="rc-done" hidden>
+        <p>지원이 접수되었습니다.</p>
+    </div>
+
+    <a class="rc-privacy" href="/privacy">개인정보처리방침</a>
+</main>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
+    import { getStorage, ref, uploadBytesResumable } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js';
+
+    // 빅치즈 앱과 같은 Firebase 설정 값
+    const firebaseConfig = {
+        apiKey: '',
+        authDomain: '',
+        projectId: 'bigcheese-on-data',
+        storageBucket: '',
+        messagingSenderId: '',
+        appId: ''
+    };
+
+    const MAX_SIZE = 50 * 1024 * 1024;
+    const EXT_RE = /\.(pdf|jpe?g|png|docx?|hwpx?|pptx?|zip)$/i;
+
+    const storage = getStorage(initializeApp(firebaseConfig));
+    const $ = (id) => document.getElementById(id);
+    const form = $('rc-form'), submitBtn = $('rc-submit'), errorEl = $('rc-error');
+
+    $('rc-content').addEventListener('input', (e) => { $('rc-count').textContent = e.target.value.length; });
+
+    $('rc-file').addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        $('rc-file-name').textContent = f ? f.name : '파일 선택';
+        $('rc-file-name').classList.toggle('is-set', !!f);
+    });
+
+    function validate(name, phone, content, file) {
+        if (!name) return '이름을 입력해주세요.';
+        if (!phone) return '연락처를 입력해주세요.';
+        if (!content) return '내용을 입력해주세요.';
+        if (!file) return '파일을 선택해주세요.';
+        if (!EXT_RE.test(file.name)) return '지원하지 않는 파일 형식입니다.';
+        if (file.size >= MAX_SIZE) return '50MB 이하 파일만 올릴 수 있습니다.';
+        if (!$('rc-agree').checked) return '개인정보 수집·이용에 동의해주세요.';
+        return '';
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = $('rc-name').value.trim();
+        const phone = $('rc-phone').value.trim();
+        const content = $('rc-content').value.trim();
+        const file = $('rc-file').files[0];
+
+        const msg = validate(name, phone, content, file);
+        errorEl.textContent = msg;
+        if (msg) return;
+
+        submitBtn.disabled = true;
+        const fileName = file.name.replace(/[\/\\]/g, '_');
+        const task = uploadBytesResumable(ref(storage, `recruit/${crypto.randomUUID()}/${fileName}`), file, {
+            customMetadata: { name, phone, content }
+        });
+
+        task.on('state_changed',
+            (s) => { submitBtn.textContent = `업로드 중 ${Math.floor(s.bytesTransferred / s.totalBytes * 100)}%`; },
+            () => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '지원하기';
+                errorEl.textContent = '제출하지 못했습니다. 다시 시도해주세요.';
+            },
+            () => {
+                form.hidden = true;
+                $('rc-done').hidden = false;
+            }
+        );
+    });
+</script>
+</body>
+</html>

@@ -175,7 +175,7 @@
             </label>
             <label class="bc-field">
                 <textarea class="bc-input" id="rc-content" maxlength="1000" placeholder=" "></textarea>
-                <span class="bc-field-label">내용</span>
+                <span class="bc-field-label">내용 (선택)</span>
                 <span class="bc-field-support is-error-msg"></span>
                 <span class="bc-field-support is-hint"><span id="rc-count">0</span> / 1000</span>
             </label>
@@ -294,7 +294,6 @@
         const errors = [];
         if (!name) errors.push([$('rc-name'), '이름을 입력해주세요.']);
         if (phone.replace(/\D/g, '').length < 10) errors.push([$('rc-phone'), '연락처를 입력해주세요.']);
-        if (!content) errors.push([$('rc-content'), '내용을 입력해주세요.']);
         if (!file) errors.push([$('rc-file'), '파일을 선택해주세요.']);
         else if (!EXT_RE.test(file.name)) errors.push([$('rc-file'), '지원하지 않는 파일 형식입니다.']);
         else if (file.size >= MAX_SIZE) errors.push([$('rc-file'), '50MB 이하 파일만 올릴 수 있습니다.']);

@@ -143,6 +143,11 @@
             width: 72px; height: 72px; border-radius: 50%;
             background: var(--bc-color-primary);
         }
+        @media (min-width: 768px) {
+            .rc-kakao { right: auto; left: calc(50% + 310px); bottom: 72px; }
+            .bc-page { padding-bottom: var(--bc-space-32); }
+            .bc-snackbar { bottom: var(--bc-space-16); }
+        }
         .rc-kakao .ch-icon {
             width: 40px; height: 40px; background: #fff;
             -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;

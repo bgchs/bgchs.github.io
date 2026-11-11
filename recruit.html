@@ -138,9 +138,16 @@
         .rc-kakao {
             position: fixed; bottom: var(--bc-space-16);
             right: max(var(--bc-layout-margin), calc((100% - var(--bc-layout-max-width)) / 2 + var(--bc-layout-margin)));
-            z-index: 10; line-height: 0;
+            z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            width: 72px; height: 72px; border-radius: 50%;
+            background: var(--bc-color-primary);
         }
-        .rc-kakao img { width: 56px; height: 56px; }
+        .rc-kakao .ch-icon {
+            width: 40px; height: 40px; background: #fff;
+            -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
+                    mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
+        }
         .bc-page { padding-bottom: calc(var(--bc-space-16) + 56px + var(--bc-space-16)); }
         .rc-logo {
             display: block; line-height: 0; background: var(--bc-color-primary);
@@ -218,7 +225,7 @@
 </main>
 
 <a class="rc-kakao" href="https://pf.kakao.com/_xaFPfn/chat" target="_blank" rel="noopener">
-    <img src="https://bgchs.github.io/btn/btn_channel.svg" alt="카카오톡 채널 문의">
+    <span class="ch-icon" role="img" aria-label="카카오톡 채널 문의"></span>
 </a>
 
 <div class="bc-snackbar" id="rc-snackbar" role="status"></div>

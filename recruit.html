@@ -8,7 +8,6 @@
     <title>채용 지원 | bigcheese</title>
     <link rel="icon" type="image/png" sizes="196x196" href="https://cdn.imweb.me/thumbnail/20250306/180662c3f2550.png">
     <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-    <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/5c0061329daf2f48e14b0ddaea9b90f3?family=Industry+Inc+Test+Base">
     <style>
         /* 빅치즈 디자인 규격 — 앱 header.html과 같은 토큰 · 컴포넌트 (필요한 것만) */
         :root {
@@ -19,12 +18,11 @@
             --bc-color-on-surface: #333333;
             --bc-color-on-surface-variant: #777777;
             --bc-color-outline: #CCCCCC;
+            --bc-color-outline-variant: #E6E6E6;
             --bc-color-error: #E4007F;
             --bc-color-inverse-surface: #333333;
             --bc-color-inverse-on-surface: #F8F4E7;
             --bc-font-body: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            --bc-font-display: 'Industry Inc Test Base', sans-serif;
-            --bc-type-headline-s: 400 24px/32px var(--bc-font-display);
             --bc-type-title-m-em: 600 16px/24px var(--bc-font-body);
             --bc-type-title-m: 500 16px/24px var(--bc-font-body);
             --bc-type-body-l: 400 16px/24px var(--bc-font-body);
@@ -50,7 +48,6 @@
             width: 100%; max-width: var(--bc-layout-max-width); margin: 0 auto;
             padding: var(--bc-space-32) var(--bc-layout-margin); font-kerning: normal;
         }
-        .bc-headline-s { font: var(--bc-type-headline-s); }
         .bc-body-s { font: var(--bc-type-body-s); }
 
         /* bc-input + bc-field (M3 filled text field) */
@@ -74,28 +71,17 @@
             transition: top 0.15s, font-size 0.15s, line-height 0.15s;
         }
         .bc-field .bc-input:focus + .bc-field-label,
-        .bc-field .bc-input:not(:placeholder-shown) + .bc-field-label,
-        .bc-field.is-fixed .bc-field-label { top: 8px; font: var(--bc-type-body-s); }
+        .bc-field .bc-input:not(:placeholder-shown) + .bc-field-label { top: 8px; font: var(--bc-type-body-s); }
         .bc-field .bc-input:focus + .bc-field-label { color: var(--bc-color-primary); }
         .bc-field .bc-input::placeholder       { color: transparent; }
         .bc-field .bc-input:focus::placeholder { color: var(--bc-color-outline); }
         .bc-field-support { display: block; margin-top: var(--bc-space-4); padding: 0 var(--bc-space-16); font: var(--bc-type-body-s); color: var(--bc-color-on-surface-variant); }
         .bc-field-support.is-error-msg { display: none; color: var(--bc-color-error); }
         .bc-field.is-error .bc-input,
-        .bc-field.is-error .rc-file { box-shadow: inset 0 0 0 2px var(--bc-color-error); }
+        .bc-field.is-error .rc-zone { box-shadow: inset 0 0 0 2px var(--bc-color-error); }
         .bc-field.is-error .bc-field-label { color: var(--bc-color-error); }
         .bc-field.is-error .is-error-msg { display: block; }
         .bc-field.is-error .is-hint { display: none; }
-
-        /* 파일 칸: bc-field 모양, 라벨은 항상 위(is-fixed) */
-        .rc-file {
-            display: flex; align-items: flex-end; height: 56px; padding: 24px var(--bc-space-16) 8px;
-            border-radius: var(--bc-radius-input); background: var(--bc-color-surface-container-lowest); cursor: pointer;
-        }
-        .rc-file input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-        .rc-file:focus-within { box-shadow: inset 0 0 0 2px var(--bc-color-primary); }
-        .rc-file-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--bc-color-outline); }
-        .rc-file-name.is-set { color: var(--bc-color-on-surface); }
 
         /* bc-card */
         .bc-card {
@@ -119,9 +105,9 @@
         .bc-btn-l { min-height: 48px; padding: 0 var(--bc-space-24); font: var(--bc-type-title-m-em); }
         .bc-btn-block { display: flex; width: 100%; }
 
-        /* bc-snackbar */
+        /* bc-snackbar — 카카오 채널 버튼 위에 뜸 */
         .bc-snackbar {
-            position: fixed; left: 50%; bottom: calc(var(--bc-space-16) + 56px + var(--bc-space-8)); transform: translateX(-50%);
+            position: fixed; left: 50%; bottom: calc(var(--bc-space-16) + 72px + var(--bc-space-8)); transform: translateX(-50%);
             width: calc(100% - 32px); max-width: calc(var(--bc-layout-max-width) - 32px);
             display: none; align-items: center; min-height: 48px; padding: var(--bc-space-12) var(--bc-space-16);
             border-radius: var(--bc-radius-list-item);
@@ -130,36 +116,45 @@
         }
         .bc-snackbar.is-open { display: flex; }
 
+        /* 파일 드롭 (File Drop, DesignBookmark 컴포넌트를 빅치즈 규격으로)
+           파일이 위로 오면 면이 살짝 떠오르고 화살표가 까딱이고, 놓으면 원이 삼킴.
+           제출하면 원 둘레 링이 실제 업로드 진행률로 차고, 끝나면 초록으로 차오르며 체크가 그려짐 */
+        .rc-zone {
+            position: relative; height: 216px; border-radius: var(--bc-radius-card);
+            background: var(--bc-color-surface-container-lowest); cursor: pointer; overflow: hidden; outline: none;
+            will-change: transform; -webkit-user-select: none; user-select: none;
+        }
+        .rc-zone::after { content: ""; position: absolute; inset: 0; background: var(--bc-color-primary); opacity: calc(var(--h, 0) * 0.08); pointer-events: none; }
+        .rc-zone:focus-visible { box-shadow: inset 0 0 0 2px var(--bc-color-primary); }
+        .rc-zone.is-locked { cursor: default; }
+        .rc-core { position: absolute; left: 50%; top: 38px; width: 72px; height: 72px; margin-left: -36px; border-radius: 50%; background: var(--bc-color-surface); z-index: 1; will-change: transform; }
+        .rc-g    { position: absolute; inset: 0; border-radius: 50%; background: var(--bc-color-primary); transform: scale(0); will-change: transform; }
+        .rc-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); opacity: 0; }
+        .rc-trk  { stroke: var(--bc-color-outline-variant); }
+        .rc-arc  { stroke: var(--bc-color-primary); }
+        .rc-ic   { position: absolute; inset: 0; display: grid; place-items: center; color: var(--bc-color-on-surface); will-change: transform, opacity; }
+        .rc-ic svg { width: 26px; height: 26px; display: block; }
+        .rc-doc  { opacity: 0; }
+        .rc-pct  { font: 600 19px/24px var(--bc-font-body); letter-spacing: -.02em; font-variant-numeric: tabular-nums; opacity: 0; }
+        .rc-ok   { color: var(--bc-color-on-primary); opacity: 0; }
+        .rc-ok svg { width: 30px; height: 30px; }
+        .rc-ok path { stroke-dasharray: 24; stroke-dashoffset: 24; }
+        .rc-line { position: absolute; left: 16px; right: 16px; z-index: 1; overflow: hidden; text-align: center; pointer-events: none; }
+        .rc-line span { position: absolute; left: 0; right: 0; top: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; will-change: transform, opacity; }
+        .rc-t { top: 130px; height: 24px; }
+        .rc-t span { font: var(--bc-type-title-m-em); }
+        .rc-s { top: 157px; height: 20px; }
+        .rc-s span { font: var(--bc-type-body-m); color: var(--bc-color-on-surface-variant); font-variant-numeric: tabular-nums; }
+
         /* 이 화면 배치 */
         .rc-top    { display: flex; align-items: center; justify-content: space-between; gap: var(--bc-space-16); }
-        .rc-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-
-        /* 카카오톡 채널 버튼: 내용 기둥(440) 오른쪽 아래 16 */
-        .rc-kakao {
-            position: fixed; bottom: var(--bc-space-16);
-            right: max(var(--bc-layout-margin), calc((100% - var(--bc-layout-max-width)) / 2 + var(--bc-layout-margin)));
-            z-index: 10;
-            display: flex; align-items: center; justify-content: center;
-            width: 72px; height: 72px; border-radius: 50%;
-            background: var(--bc-color-primary);
-        }
-        @media (min-width: 768px) {
-            .rc-kakao { right: auto; left: calc(50% + 310px); bottom: 72px; }
-            .bc-page { padding-bottom: var(--bc-space-32); }
-            .bc-snackbar { bottom: var(--bc-space-16); }
-        }
-        .rc-kakao .ch-icon {
-            width: 40px; height: 40px; background: #fff;
-            -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
-                    mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
-        }
-        .bc-page { padding-bottom: calc(var(--bc-space-16) + 56px + var(--bc-space-16)); }
         .rc-logo {
             display: block; line-height: 0; background: var(--bc-color-primary);
             -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg) left center / contain no-repeat;
                     mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/logo_bc.svg) left center / contain no-repeat;
         }
         .rc-logo img { display: block; height: 40px; width: auto; opacity: 0; }
+        .rc-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
         .rc-poster { display: block; width: 100%; height: auto; margin: var(--bc-space-24) 0; border-radius: var(--bc-radius-card); }
         .rc-fields { display: flex; flex-direction: column; gap: var(--bc-space-8); }
         .rc-agree  { margin-top: var(--bc-space-16); }
@@ -171,6 +166,27 @@
         .rc-submit { margin-top: var(--bc-space-16); }
         .rc-done   { text-align: center; }
         .rc-privacy { display: block; margin-top: var(--bc-space-16); text-align: center; color: var(--bc-color-on-surface-variant); }
+
+        /* 카카오톡 채널 버튼: 모바일은 내용 기둥(440) 오른쪽 아래 16, PC는 내용 바깥 */
+        .rc-kakao {
+            position: fixed; bottom: var(--bc-space-16);
+            right: max(var(--bc-layout-margin), calc((100% - var(--bc-layout-max-width)) / 2 + var(--bc-layout-margin)));
+            z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            width: 72px; height: 72px; border-radius: 50%;
+            background: var(--bc-color-primary);
+        }
+        .bc-page { padding-bottom: calc(var(--bc-space-16) + 72px + var(--bc-space-16)); }
+        @media (min-width: 768px) {
+            .rc-kakao { right: auto; left: calc(50% + 310px); bottom: 72px; }
+            .bc-page { padding-bottom: var(--bc-space-32); }
+            .bc-snackbar { bottom: var(--bc-space-16); }
+        }
+        .rc-kakao .ch-icon {
+            width: 40px; height: 40px; background: #fff;
+            -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
+                    mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
+        }
     </style>
 </head>
 <body>
@@ -200,12 +216,20 @@
                 <span class="bc-field-support is-error-msg"></span>
                 <span class="bc-field-support is-hint"><span id="rc-count">0</span> / 1000</span>
             </label>
-            <div class="bc-field is-fixed">
-                <label class="rc-file">
-                    <input id="rc-file" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.hwp,.hwpx,.ppt,.pptx,.zip">
-                    <span class="rc-file-name" id="rc-file-name">파일 선택</span>
-                </label>
-                <span class="bc-field-label">파일</span>
+            <div class="bc-field">
+                <div class="rc-zone" id="rc-zone" role="button" tabindex="0" aria-label="파일 첨부. 끌어다 놓거나 눌러서 선택">
+                    <div class="rc-core" id="rc-core">
+                        <i class="rc-g" id="rc-g"></i>
+                        <svg class="rc-ring" id="rc-ring" viewBox="0 0 72 72" fill="none" stroke-width="3" stroke-linecap="round"><circle class="rc-trk" cx="36" cy="36" r="33"/><circle class="rc-arc" id="rc-arc" cx="36" cy="36" r="33"/></svg>
+                        <span class="rc-ic" id="rc-up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span>
+                        <span class="rc-ic rc-doc" id="rc-doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span>
+                        <span class="rc-ic rc-pct" id="rc-pct">0</span>
+                        <span class="rc-ic rc-ok" id="rc-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id="rc-tick" d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                    </div>
+                    <div class="rc-line rc-t" id="rc-t"><span></span></div>
+                    <div class="rc-line rc-s" id="rc-s"><span></span></div>
+                    <input type="file" id="rc-file" hidden tabindex="-1" aria-hidden="true" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.hwp,.hwpx,.ppt,.pptx,.zip">
+                </div>
                 <span class="bc-field-support is-error-msg"></span>
                 <span class="bc-field-support is-hint">PDF · 이미지 · DOC · HWP · PPT · ZIP, 50MB 이하</span>
             </div>
@@ -217,6 +241,7 @@
                 <li>항목: 이름, 연락처, 지원 내용, 첨부 파일</li>
                 <li>목적: 채용 전형 진행</li>
                 <li>보유 기간: 채용 전형 완료 후 3개월</li>
+                <li>동의하지 않으면 지원할 수 없습니다.</li>
             </ul>
             <label class="rc-agree-row"><input type="checkbox" id="rc-agree"> 동의합니다</label>
         </div>
@@ -234,6 +259,165 @@
 </a>
 
 <div class="bc-snackbar" id="rc-snackbar" role="status"></div>
+
+<script>
+/* ==========================================
+   파일 드롭 (RCDrop)
+   DesignBookmark File Drop의 스프링 엔진과 스프링 값(stiffness damping)을 그대로 사용.
+   데모용 자동 재생(파일 칩이 날아오는 장면)은 빼고, 실제 선택 · 업로드 진행률에 연결.
+   ========================================== */
+window.RCDrop = (() => {
+    /* 스프링 엔진 (원본 motion.js와 같음): rAF 한 루프, dt 상한 1/30초, 프레임당 4번 나눠 계산 */
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const S = (x, k = 400, c = 30) => ({ x, v: 0, t: x, k, c: reduce ? 2 * Math.sqrt(k) : c });   // 움직임 줄이기: 임계 감쇠(튕김 없음)
+    const step = (s, dt) => { const a = -s.k * (s.x - s.t) - s.c * s.v; s.v += a * dt; s.x += s.v * dt; };
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const timers = [];
+    const after = (sec, fn) => { timers.push({ t: sec, fn }); };
+
+    const $ = id => document.getElementById(id);
+    const zone = $('rc-zone'), core = $('rc-core'), g = $('rc-g'), ring = $('rc-ring'), arc = $('rc-arc');
+    const up = $('rc-up'), doc = $('rc-doc'), pct = $('rc-pct'), ok = $('rc-ok'), tick = $('rc-tick'), pick = $('rc-file');
+    const CIRC = 2 * Math.PI * 33;
+    const MAX_SIZE = 50 * 1024 * 1024;
+    const EXT_RE = /\.(pdf|jpe?g|png|docx?|hwpx?|pptx?|zip)$/i;
+    arc.style.strokeDasharray = CIRC.toFixed(2);
+
+    /* 끌어다 놓기가 되는 기기(마우스)만 "끌어다 놓으세요" */
+    const canDrag = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const IDLE_T = canDrag ? '파일을 끌어다 놓으세요' : '눌러서 파일 선택';
+    const IDLE_S = canDrag ? '또는 눌러서 선택' : '이력서 · 포트폴리오';
+
+    /* 두 줄 글자: 이전 글자는 위로 빠지고 새 글자가 올라옴 */
+    const line = id => { const el = $(id); return { el, cur: el.firstElementChild, old: null, o: S(1, 360, 30) }; };
+    const T = line('rc-t'), U = line('rc-s');
+    T.cur.textContent = IDLE_T; U.cur.textContent = IDLE_S;
+    function say(l, text) {
+        if (l.cur.textContent === text) return;
+        if (l.old) l.old.remove();
+        l.old = l.cur;
+        l.cur = document.createElement('span');
+        l.cur.textContent = text;
+        l.el.appendChild(l.cur);
+        l.o.x = 0; l.o.v = 0; l.o.t = 1;
+    }
+
+    /* 원본 스프링 값 그대로 */
+    const ZS = S(1, 380, 16), ZH = S(0, 300, 26), CS = S(1, 420, 14);                        // 영역 눌림, 파일 올라옴, 원 삼킴
+    const UP = S(1, 420, 30), DOC = S(0, 420, 30), PO = S(0, 420, 30), RO = S(0, 300, 30);   // 화살표, 파일 아이콘, 숫자, 링
+    const G = S(0, 260, 21), K = S(0, 200, 26);                                               // 초록 채움, 체크
+    let phase = 'idle', p = 0, total = 0, name = '', overAt = -9, clock = 0, file = null;
+    let onError = () => {}, onPick = () => {};
+
+    const fmt = b => b >= 1e6 ? (b / 1e6).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1e3)) + ' KB';
+    const short = n => n.length > 24 ? n.slice(0, 12) + '…' + n.slice(-9) : n;
+    const locked = () => phase === 'upload' || phase === 'done';
+
+    function take(f) {
+        if (!f || locked()) return;
+        if (!EXT_RE.test(f.name)) { onError('지원하지 않는 파일 형식입니다.'); return; }
+        if (f.size >= MAX_SIZE) { onError('50MB 이하 파일만 올릴 수 있습니다.'); return; }
+        file = f; name = short(f.name); total = f.size; phase = 'attached';
+        UP.t = 0; DOC.t = 1;
+        CS.x = 1.2; ZS.x = .965;                 // 원이 삼키고, 영역이 살짝 눌림
+        say(T, name); say(U, fmt(total));
+        onPick();
+    }
+
+    /* 칸 밖에 떨어뜨린 파일을 브라우저가 열어버리지 않게 */
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', e => e.preventDefault());
+
+    zone.addEventListener('dragover', e => { e.preventDefault(); if (!locked()) overAt = clock; });
+    zone.addEventListener('drop', e => { e.preventDefault(); overAt = -9; take(e.dataTransfer && e.dataTransfer.files[0]); });
+    zone.addEventListener('click', e => { if (!locked() && e.target !== pick) pick.click(); });
+    zone.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && !locked()) { e.preventDefault(); pick.click(); } });
+    zone.addEventListener('pointerdown', () => { if (!locked()) ZS.x = .975; });
+    pick.addEventListener('change', () => { take(pick.files[0]); pick.value = ''; });
+
+    let last = performance.now();
+    function loop(now) {
+        const dt = Math.min((now - last) / 1000, 1 / 30); last = now;
+        for (let i = timers.length - 1; i >= 0; i--) {
+            if ((timers[i].t -= dt) <= 0) timers.splice(i, 1)[0].fn();
+        }
+        for (let n = 0; n < 4; n++) frame(dt / 4);
+        render();
+        requestAnimationFrame(loop);
+    }
+    function frame(dt) {
+        clock += dt;
+        ZH.t = !locked() && clock - overAt < .2 ? 1 : 0;
+        [ZS, ZH, CS, UP, DOC, PO, RO, G, K, T.o, U.o].forEach(s => step(s, dt));
+    }
+    function render() {
+        const h = clamp(ZH.x, 0, 1);
+        zone.style.setProperty('--h', h.toFixed(3));
+        zone.style.transform = `scale(${(ZS.x * (1 + .025 * ZH.x)).toFixed(4)})`;
+        core.style.transform = `translateY(${(-5 * ZH.x).toFixed(2)}px) scale(${CS.x.toFixed(4)})`;
+        const bob = -3.5 * h * (.5 + .5 * Math.sin(clock * 7));
+        up.style.opacity = clamp(UP.x, 0, 1).toFixed(3);
+        up.style.transform = `translateY(${(bob + (1 - UP.x) * -12).toFixed(2)}px) scale(${(.6 + .4 * UP.x).toFixed(3)})`;
+        doc.style.opacity = clamp(DOC.x, 0, 1).toFixed(3);
+        doc.style.transform = `translateY(${(bob + (1 - DOC.x) * 12).toFixed(2)}px) scale(${(.6 + .4 * DOC.x).toFixed(3)})`;
+        pct.style.opacity = clamp(PO.x, 0, 1).toFixed(3);
+        pct.style.transform = `scale(${(.7 + .3 * PO.x).toFixed(3)})`;
+        ring.style.opacity = clamp(RO.x, 0, 1).toFixed(3);
+        arc.style.strokeDashoffset = (CIRC * (1 - p)).toFixed(2);
+        g.style.transform = `scale(${Math.max(0, G.x).toFixed(4)})`;
+        ok.style.opacity = clamp(K.x * 4, 0, 1).toFixed(3);
+        tick.style.strokeDashoffset = (24 * (1 - clamp(K.x, 0, 1))).toFixed(2);
+        if (phase === 'upload') {
+            const n = String(Math.round(p * 100));
+            if (pct.textContent !== n) pct.textContent = n;
+        }
+        [T, U].forEach(l => {
+            const o = clamp(l.o.x, 0, 1);
+            l.cur.style.opacity = clamp((o - .35) / .65, 0, 1).toFixed(3);   // 새 글자는 이전 글자가 빠진 뒤에
+            l.cur.style.transform = `translateY(${((1 - l.o.x) * 16).toFixed(2)}px)`;
+            if (l.old) {
+                if (o > .985) { l.old.remove(); l.old = null; }
+                else { l.old.style.opacity = clamp(1 - o * 1.8, 0, 1).toFixed(3); l.old.style.transform = `translateY(${(-l.o.x * 16).toFixed(2)}px)`; }
+            }
+        });
+    }
+    requestAnimationFrame(loop);
+
+    return {
+        get file() { return file; },
+        set onError(fn) { onError = fn; },
+        set onPick(fn) { onPick = fn; },
+        /* 제출 시작: 아이콘 → 링 + 숫자 */
+        start() {
+            phase = 'upload'; p = 0;
+            zone.classList.add('is-locked');
+            DOC.t = 0; PO.t = 1; RO.t = 1;
+            say(T, '업로드 중'); say(U, `0 KB / ${fmt(total)}`);
+        },
+        /* 실제 업로드 진행률 */
+        progress(sent, size) {
+            if (phase !== 'upload') return;
+            p = size ? clamp(sent / size, 0, 1) : 0;
+            const s = `${fmt(sent)} / ${fmt(size)}`;
+            if (U.cur.textContent !== s) U.cur.textContent = s;
+        },
+        /* 완료: 초록으로 차오르고 체크가 그려진 뒤 다음 화면으로 */
+        done(next) {
+            phase = 'done'; p = 1;
+            PO.t = 0; RO.t = 0; G.t = 1; K.t = 1; CS.x = .84;
+            say(T, '업로드 완료'); say(U, `${name} · ${fmt(total)}`);
+            after(1.2, next);
+        },
+        /* 실패: 첨부한 상태로 되돌림 */
+        fail() {
+            phase = 'attached'; p = 0;
+            zone.classList.remove('is-locked');
+            PO.t = 0; RO.t = 0; DOC.t = 1;
+            say(T, name); say(U, fmt(total));
+        }
+    };
+})();
+</script>
 
 <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
@@ -253,7 +437,7 @@
 
     const storage = getStorage(initializeApp(firebaseConfig));
     const $ = (id) => document.getElementById(id);
-    const form = $('rc-form'), submitBtn = $('rc-submit');
+    const form = $('rc-form'), submitBtn = $('rc-submit'), zone = $('rc-zone');
 
     /* BCField (앱 footer와 같은 동작) */
     const BCField = {
@@ -286,6 +470,10 @@
         snackTimer = setTimeout(() => s.classList.remove('is-open'), 4000);
     }
 
+    /* 파일 드롭: 고르거나 놓은 파일이 형식 · 용량에 맞지 않으면 그 칸에 오류 */
+    RCDrop.onError = (msg) => BCField.setError(zone, msg);
+    RCDrop.onPick = () => zone.closest('.bc-field').classList.remove('is-error');
+
     $('rc-phone').addEventListener('input', (e) => {
         const d = e.target.value.replace(/\D/g, '').slice(0, 11);
         const isDelete = (e.inputType || '').startsWith('delete');
@@ -300,13 +488,6 @@
         $('rc-count').textContent = e.target.value.length;
     });
 
-    $('rc-file').addEventListener('change', (e) => {
-        e.target.closest('.bc-field').classList.remove('is-error');
-        const f = e.target.files[0];
-        $('rc-file-name').textContent = f ? f.name : '파일 선택';
-        $('rc-file-name').classList.toggle('is-set', !!f);
-    });
-
     $('rc-agree').addEventListener('change', () => $('rc-agree-card').classList.remove('is-error'));
 
     form.addEventListener('submit', (e) => {
@@ -314,14 +495,14 @@
         const name = $('rc-name').value.trim();
         const phone = $('rc-phone').value.trim();
         const content = $('rc-content').value.trim();
-        const file = $('rc-file').files[0];
+        const file = RCDrop.file;
 
         const errors = [];
         if (!name) errors.push([$('rc-name'), '이름을 입력해주세요.']);
         if (phone.replace(/\D/g, '').length < 10) errors.push([$('rc-phone'), '연락처를 입력해주세요.']);
-        if (!file) errors.push([$('rc-file'), '파일을 선택해주세요.']);
-        else if (!EXT_RE.test(file.name)) errors.push([$('rc-file'), '지원하지 않는 파일 형식입니다.']);
-        else if (file.size >= MAX_SIZE) errors.push([$('rc-file'), '50MB 이하 파일만 올릴 수 있습니다.']);
+        if (!file) errors.push([zone, '파일을 선택해주세요.']);
+        else if (!EXT_RE.test(file.name)) errors.push([zone, '지원하지 않는 파일 형식입니다.']);
+        else if (file.size >= MAX_SIZE) errors.push([zone, '50MB 이하 파일만 올릴 수 있습니다.']);
 
         const agreed = $('rc-agree').checked;
         $('rc-agree-card').classList.toggle('is-error', !agreed);
@@ -331,21 +512,26 @@
         if (!navigator.onLine) { snackbar('인터넷 연결을 확인해주세요.'); return; }
 
         submitBtn.disabled = true;
+        submitBtn.textContent = '제출 중';
+        RCDrop.start();
         const fileName = file.name.replace(/[\/\\]/g, '_');
         const task = uploadBytesResumable(ref(storage, `recruit/${crypto.randomUUID()}/${fileName}`), file, {
             customMetadata: { name, phone, content }
         });
 
         task.on('state_changed',
-            (s) => { submitBtn.textContent = `${Math.floor(s.bytesTransferred / s.totalBytes * 100)}%`; },
+            (s) => RCDrop.progress(s.bytesTransferred, s.totalBytes),
             () => {
+                RCDrop.fail();
                 submitBtn.disabled = false;
                 submitBtn.textContent = '지원하기';
                 snackbar('제출하지 못했습니다. 다시 시도해주세요.');
             },
             () => {
-                form.hidden = true;
-                $('rc-done').hidden = false;
+                RCDrop.done(() => {
+                    form.hidden = true;
+                    $('rc-done').hidden = false;
+                });
             }
         );
     });

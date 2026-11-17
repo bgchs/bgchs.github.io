@@ -28,6 +28,7 @@
             --bc-type-body-l: 400 16px/24px var(--bc-font-body);
             --bc-type-body-m: 400 14px/20px var(--bc-font-body);
             --bc-type-body-s: 400 12px/16px var(--bc-font-body);
+            --bc-type-label-l: 500 14px/20px var(--bc-font-body);
             --bc-space-4: 4px; --bc-space-8: 8px; --bc-space-12: 12px; --bc-space-16: 16px; --bc-space-24: 24px; --bc-space-32: 32px;
             --bc-radius-input: 16px; --bc-radius-card: 16px; --bc-radius-list-item: 4px; --bc-radius-full: 999px;
             --bc-layout-margin: 16px; --bc-layout-max-width: 440px;
@@ -156,6 +157,12 @@
         .rc-logo img { display: block; height: 40px; width: auto; opacity: 0; }
         .rc-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
         .rc-poster { display: block; width: 100%; height: auto; margin: var(--bc-space-24) 0; border-radius: var(--bc-radius-card); }
+        .rc-job { margin-bottom: var(--bc-space-24); }
+        .rc-job dl { display: grid; grid-template-columns: 72px 1fr; align-items: baseline; gap: var(--bc-space-12) var(--bc-space-16); }
+        .rc-job dt { font: var(--bc-type-label-l); color: var(--bc-color-on-surface-variant); }
+        .rc-job dd { font: var(--bc-type-body-l); }
+        .rc-job a  { color: var(--bc-color-primary); text-decoration: none; }
+        .rc-job-note { margin-top: var(--bc-space-16); font: var(--bc-type-body-m); color: var(--bc-color-on-surface-variant); }
         .rc-fields { display: flex; flex-direction: column; gap: var(--bc-space-8); }
         .rc-agree  { margin-top: var(--bc-space-16); }
         .rc-agree-title { font: var(--bc-type-title-m); }
@@ -197,6 +204,21 @@
     </header>
 
     <img class="rc-poster" src="https://bgchs.github.io/hiring_poster.png" alt="WE'RE HIRING">
+
+    <section class="bc-card rc-job" aria-label="채용 공고">
+        <dl>
+            <dt>모집 분야</dt><dd>코치</dd>
+            <dt>하는 일</dt><dd>수업 진행 및 운영</dd>
+            <dt>모집 인원</dt><dd>1명</dd>
+            <dt>근무 장소</dt><dd>크로스핏 빅치즈 신당<br><a href="https://www.instagram.com/crossfit.bigcheese.sindang" target="_blank" rel="noopener">@crossfit.bigcheese.sindang</a></dd>
+            <dt>근무 시작</dt><dd>2026년 12월</dd>
+            <dt>근무 형태</dt><dd>협의</dd>
+            <dt>급여</dt><dd>경력에 따라 협의</dd>
+            <dt>우대 사항</dt><dd>CrossFit Level 1<br>생활스포츠지도사</dd>
+            <dt>문의</dt><dd><a href="mailto:contact@bigcheese.co.kr">contact@bigcheese.co.kr</a></dd>
+        </dl>
+        <p class="rc-job-note">아래 지원서를 작성해 주세요.</p>
+    </section>
 
     <form id="rc-form" novalidate>
         <div class="rc-fields">

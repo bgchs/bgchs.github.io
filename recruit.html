@@ -170,6 +170,7 @@
         .rc-agree-row   { display: flex; align-items: center; gap: var(--bc-space-12); min-height: var(--bc-touch-min); margin-top: var(--bc-space-8); cursor: pointer; }
         .rc-agree-row input { width: 18px; height: 18px; margin: 0; flex-shrink: 0; accent-color: var(--bc-color-primary); }
         .rc-agree.is-error { box-shadow: inset 0 0 0 2px var(--bc-color-error); }
+        .rc-agree.is-error + .is-error-msg { display: block; }
         .rc-submit { margin-top: var(--bc-space-16); }
         .rc-done   { text-align: center; }
         .rc-privacy { display: block; margin-top: var(--bc-space-16); text-align: center; color: var(--bc-color-on-surface-variant); }
@@ -209,7 +210,7 @@
         <dl>
             <dt>모집 분야</dt><dd>코치</dd>
             <dt>모집 인원</dt><dd>1명</dd>
-            <dt>주요 업무</dt><dd>크로스핏 수업 진행 및 운영</dd>
+            <dt>주요 업무</dt><dd>크로스핏 수업 진행 및 운영</dd>9
             <dt>근무 장소</dt><dd>크로스핏 빅치즈 신당<br><a href="https://www.instagram.com/crossfit.bigcheese.sindang" target="_blank" rel="noopener">@crossfit.bigcheese.sindang</a></dd>
             <dt>근무 시작</dt><dd>2026년 12월중</dd>
             <dt>급여</dt><dd>경력에 따라 협의</dd>
@@ -265,6 +266,7 @@
             </ul>
             <label class="rc-agree-row"><input type="checkbox" id="rc-agree"> 동의합니다</label>
         </div>
+        <span class="bc-field-support is-error-msg">동의가 필요합니다.</span>
 
         <button class="bc-btn bc-btn-l bc-btn-block rc-submit" id="rc-submit" type="submit">지원하기</button>
     </form>

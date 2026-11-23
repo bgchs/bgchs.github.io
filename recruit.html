@@ -175,25 +175,41 @@
         .rc-done   { text-align: center; }
         .rc-privacy { display: block; margin-top: var(--bc-space-16); text-align: center; color: var(--bc-color-on-surface-variant); }
 
-        /* 카카오톡 채널 버튼: 모바일은 내용 기둥(440) 오른쪽 아래 16, PC는 내용 바깥 */
+        /* 카카오톡 채널 버튼
+           모바일: 앱 홈 FAB와 같음 — 48 · 아이콘 24 크림 · 그림자 3, 오른쪽 16, 아래는 앱 하단 내비(64 + 20 또는 홈 표시줄) 위 16
+           PC: 내용 바깥 오른쪽, 72 · 아이콘 40 (crossfit 페이지와 같음) */
+        :root {
+            --rc-fab-size: 48px;
+            --rc-fab-bottom: calc(64px + max(20px, env(safe-area-inset-bottom, 0px)) + var(--bc-space-16));
+        }
         .rc-kakao {
-            position: fixed; bottom: var(--bc-space-16);
+            position: fixed; bottom: var(--rc-fab-bottom);
             right: max(var(--bc-layout-margin), calc((100% - var(--bc-layout-max-width)) / 2 + var(--bc-layout-margin)));
             z-index: 10;
             display: flex; align-items: center; justify-content: center;
-            width: 72px; height: 72px; border-radius: 50%;
+            width: var(--rc-fab-size); height: var(--rc-fab-size); border-radius: 50%;
             background: var(--bc-color-primary);
+            box-shadow: var(--bc-elevation-3);
+            -webkit-tap-highlight-color: transparent;
         }
-        .bc-page { padding-bottom: calc(var(--bc-space-16) + 72px + var(--bc-space-16)); }
-        @media (min-width: 768px) {
-            .rc-kakao { right: auto; left: calc(50% + 310px); bottom: 72px; }
-            .bc-page { padding-bottom: var(--bc-space-32); }
-            .bc-snackbar { bottom: var(--bc-space-16); }
+        .rc-kakao::before {
+            content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+            background: var(--bc-color-on-primary); opacity: 0; transition: opacity 0.15s;
         }
+        .rc-kakao:active::before { opacity: 0.1; }
         .rc-kakao .ch-icon {
-            width: 40px; height: 40px; background: #fff;
+            width: 24px; height: 24px; background: var(--bc-color-on-primary);
             -webkit-mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
                     mask: url(https://cdn.jsdelivr.net/gh/bgchs/bgchs.github.io@main/btn/btn_channel.svg) center / contain no-repeat;
+        }
+        .bc-page { padding-bottom: calc(var(--rc-fab-bottom) + var(--rc-fab-size) + var(--bc-space-16)); }
+        .bc-snackbar { bottom: calc(var(--rc-fab-bottom) + var(--rc-fab-size) + var(--bc-space-8)); }
+        @media (min-width: 768px) {
+            :root { --rc-fab-size: 72px; }
+            .rc-kakao { right: auto; left: calc(50% + 310px); bottom: 72px; box-shadow: none; }
+            .rc-kakao .ch-icon { width: 40px; height: 40px; }
+            .bc-page { padding-bottom: var(--bc-space-32); }
+            .bc-snackbar { bottom: var(--bc-space-16); }
         }
     </style>
 </head>
